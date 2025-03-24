@@ -43,21 +43,19 @@ fun BottomNavBar(
         )
     )
 
-    // iOS-style bottom navigation
     NavigationBar(
         modifier = modifier
             .fillMaxWidth()
             .height(76.dp)
             .padding(bottom = 0.dp)
             .shadow(elevation = 8.dp, spotColor = Color(0x1A000000)),
-        containerColor = Color.White, // iOS uses solid white bars
-        tonalElevation = 0.dp // No elevation for iOS style
+        containerColor = Color.White,
+        tonalElevation = 0.dp
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
-        // Handle visibility of bottom navigation
-        val showBottomNav = currentRoute != null && 
+        val showBottomNav = currentRoute != null &&
             !currentRoute.startsWith(NavigationDestinations.DETAILS.substringBefore("{"))
         
         if (showBottomNav) {
@@ -88,15 +86,12 @@ fun BottomNavBar(
                     onClick = {
                         if (currentRoute != item.route) {
                             navController.navigate(item.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
+
                                 popUpTo(NavigationDestinations.HOME) {
                                     saveState = true
                                 }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
+
                                 launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
                                 restoreState = true
                             }
                         }
