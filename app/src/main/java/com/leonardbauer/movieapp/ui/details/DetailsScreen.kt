@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -58,16 +59,41 @@ fun DetailsScreen(
     
     Scaffold(
         topBar = {
+            // iOS-style top bar with back button
             TopAppBar(
-                title = { Text("Movie Details") },
+                title = { 
+                    Text(
+                        "Movie Details", 
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.SemiBold
+                    ) 
+                },
                 navigationIcon = {
+                    // iOS uses text "Back" instead of just an icon
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(end = 4.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.ArrowBack, 
+                                contentDescription = "Back",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                "Back",
+                                color = MaterialTheme.colorScheme.primary,
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = Color.Transparent,
+                    titleContentColor = Color.Black,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary
                 )
             )
         }
@@ -110,10 +136,16 @@ fun MovieDetailsContent(
             .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
+        // iOS-style card - more rounded corners, subtle shadow
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            shape = RoundedCornerShape(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Box(
@@ -262,15 +294,24 @@ fun MovieDetailsContent(
 
 @Composable
 fun DetailRow(label: String, value: String) {
-    Row(modifier = Modifier.padding(vertical = 4.dp)) {
+    // iOS-style detail row
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
         Text(
-            text = "$label: ",
+            text = label,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
+            color = Color.Gray,
+            modifier = Modifier
+                .weight(0.35f)
+                .padding(end = 8.dp)
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(0.65f)
         )
     }
 }

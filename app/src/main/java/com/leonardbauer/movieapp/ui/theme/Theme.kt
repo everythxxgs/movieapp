@@ -2,6 +2,7 @@ package com.leonardbauer.movieapp.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -11,33 +12,39 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+private val whiteColor = androidx.compose.ui.graphics.Color.White
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = IOSDarkPurple,
+    secondary = PurplePrimary,
+    tertiary = IOSBlue,
+    background = IOSDarkBackground,
+    surface = IOSDarkSurface,
+    onPrimary = whiteColor,
+    onSecondary = whiteColor,
+    onTertiary = whiteColor,
+    onBackground = whiteColor,
+    onSurface = whiteColor
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = PurplePrimary,
+    secondary = PurpleDark,
+    tertiary = IOSBlue,
+    background = IOSLightGray,
+    surface = whiteColor,
+    onPrimary = whiteColor,
+    onSecondary = whiteColor,
+    onTertiary = whiteColor,
+    onBackground = IOSTextPrimary,
+    onSurface = IOSTextPrimary
 )
 
 @Composable
 fun MovieappTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    // iOS design doesn't use dynamic colors like Material, so set to false by default
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -53,6 +60,7 @@ fun MovieappTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }
