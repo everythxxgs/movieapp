@@ -127,7 +127,6 @@ fun SearchBar(
     onSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // iOS-style search bar
     Box(
         modifier = modifier
             .fillMaxWidth()
