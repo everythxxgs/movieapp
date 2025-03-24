@@ -3,8 +3,10 @@ package com.leonardbauer.movieapp.ui.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -37,9 +39,17 @@ fun MovieNavigation() {
     val apiService = remember { AppModule.provideApiService(client) }
     val repository = remember { AppModule.provideMovieRepository(apiService) }
     
+    // Calculate whether to show the bottom bar
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val showBottomBar = currentRoute != null && 
+        !currentRoute.startsWith(NavigationDestinations.DETAILS.substringBefore("{"))
+        
     Scaffold(
         bottomBar = {
-            BottomNavBar(navController = navController)
+            if (showBottomBar) {
+                BottomNavBar(navController = navController)
+            }
         }
     ) { innerPadding ->
         NavHost(

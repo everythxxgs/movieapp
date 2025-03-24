@@ -47,7 +47,8 @@ fun BottomNavBar(
     NavigationBar(
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(76.dp)
+            .padding(bottom = 0.dp)
             .shadow(elevation = 8.dp, spotColor = Color(0x1A000000)),
         containerColor = Color.White, // iOS uses solid white bars
         tonalElevation = 0.dp // No elevation for iOS style
@@ -55,11 +56,12 @@ fun BottomNavBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
-        items.forEach { item ->
-            // Don't show bottom nav while in detail screen
-            if (!currentRoute.isNullOrEmpty() && 
-                !currentRoute.startsWith(NavigationDestinations.DETAILS.substringBefore("{"))
-            ) {
+        // Handle visibility of bottom navigation
+        val showBottomNav = currentRoute != null && 
+            !currentRoute.startsWith(NavigationDestinations.DETAILS.substringBefore("{"))
+        
+        if (showBottomNav) {
+            items.forEach { item ->
                 NavigationBarItem(
                     icon = { 
                         Icon(
